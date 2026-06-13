@@ -2,625 +2,404 @@
 <html lang="en">
 <head>
     <meta charset="UTF-8">
-    <meta name="viewport" content="width=device-width, initial-scale=1.0, maximum-scale=1.0, user-scalable=no">
-    <meta name="theme-color" content="#4361ee">
-    <title>Integrated Structural Calculator</title>
-    <link href="https://fonts.googleapis.com/css2?family=Poppins:wght@300;400;500;600;700&family=Roboto:wght@300;400;500;700&display=swap" rel="stylesheet">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>P2P File Sharing</title>
+    <script src="https://cdn.jsdelivr.net/npm/peerjs@1.4.7/dist/peerjs.min.js"></script>
     <style>
-        :root {
-            --primary: #4361ee;
-            --primary-dark: #3a56d4;
-            --success: #4cc9f0;
-            --danger: #f72585;
-            --light: #f8f9fa;
-            --dark: #212529;
-            --gray: #6c757d;
-            --border-radius: 10px;
-            --box-shadow: 0 4px 10px rgba(0, 0, 0, 0.1);
-            --transition: all 0.2s ease;
-        }
-
-        * {
-            box-sizing: border-box;
-            margin: 0;
-            padding: 0;
-        }
-
-        body {
-            font-family: 'Poppins', sans-serif;
-            background: linear-gradient(135deg, #f5f7fa 0%, #e4e8f0 100%);
-            min-height: 100vh;
-            padding: 15px;
-            color: var(--dark);
-            line-height: 1.5;
-            -webkit-tap-highlight-color: transparent;
-        }
-
-        .app-container {
-            max-width: 700px;
-            margin: 15px auto;
-            background: white;
-            border-radius: var(--border-radius);
-            box-shadow: var(--box-shadow);
-            overflow: hidden;
-            padding-bottom: env(safe-area-inset-bottom);
-        }
-
-        .app-header {
-            background: var(--primary);
-            color: white;
-            padding: 20px;
-            text-align: center;
-            position: relative;
-        }
-
-        .app-header h1 {
-            font-weight: 600;
-            font-size: clamp(1.4rem, 5vw, 1.6rem);
-            margin-bottom: 5px;
-        }
-
-        .app-header p {
-            opacity: 0.9;
-            font-size: clamp(0.8rem, 3vw, 0.85rem);
-        }
-
-        .app-header::after {
-            content: '';
-            position: absolute;
-            bottom: 0;
-            left: 0;
-            right: 0;
-            height: 3px;
-            background: linear-gradient(90deg, var(--primary), var(--success));
-        }
-
-        .app-body {
-            padding: 20px;
-        }
-
-        .form-section {
-            margin-bottom: 20px;
-        }
-
-        .section-title {
-            font-size: clamp(1rem, 4vw, 1.1rem);
-            font-weight: 500;
-            color: var(--primary);
-            margin-bottom: 12px;
-            padding-bottom: 6px;
-            border-bottom: 2px solid rgba(67, 97, 238, 0.1);
-        }
-
-        .form-group {
-            margin-bottom: 15px;
-        }
-
-        label {
-            display: block;
-            margin-bottom: 6px;
-            font-weight: 500;
-            color: var(--dark);
-            font-size: clamp(0.85rem, 3.5vw, 0.9rem);
-        }
-
-        input, select {
-            width: 100%;
-            padding: 12px;
-            min-height: 44px;
-            border: 1px solid #e0e0e0;
-            border-radius: var(--border-radius);
-            font-size: clamp(0.9rem, 3.5vw, 1rem);
-            transition: var(--transition);
-            background-color: var(--light);
-            -webkit-appearance: none;
-            -moz-appearance: none;
-            appearance: none;
-        }
-
-        input:focus, select:focus {
-            outline: none;
-            border-color: var(--primary);
-            box-shadow: 0 0 0 2px rgba(67, 97, 238, 0.2);
-        }
-
-        input[type="number"] {
-            -webkit-appearance: textfield;
-            -moz-appearance: textfield;
-            appearance: textfield;
-        }
-
-        input[type="number"]::-webkit-inner-spin-button,
-        input[type="number"]::-webkit-outer-spin-button {
-            -webkit-appearance: none;
-            margin: 0;
-        }
-
-        .input-row {
-            display: flex;
-            gap: 12px;
-            align-items: flex-start;
-        }
-
-        .input-row .form-group {
-            flex: 1;
-        }
-
-        .column-shape-group {
-            flex: 0 0 140px;
-        }
-
-        .rebar-group {
-            margin-bottom: 15px;
-            padding: 12px;
-            border: 1px solid #e0e0e0;
-            border-radius: var(--border-radius);
-            background: var(--light);
-        }
-
-        .rebar-set {
-            display: flex;
-            align-items: center;
-            gap: 10px;
-            margin-bottom: 10px;
-        }
-
-        .rebar-set:last-child {
-            margin-bottom: 0;
-        }
-
-        .rebar-set input {
-            flex: 1;
-        }
-
-        .btn {
-            display: inline-block;
-            padding: 12px 20px;
-            min-height: 44px;
-            font-size: clamp(0.9rem, 3.5vw, 1rem);
-            font-weight: 500;
-            text-align: center;
-            border: none;
-            border-radius: var(--border-radius);
-            cursor: pointer;
-            transition: var(--transition);
-            user-select: none;
-            -webkit-user-select: none;
-            touch-action: manipulation;
-        }
-
-        .btn-primary {
-            background: var(--primary);
-            color: white;
-            box-shadow: 0 3px 5px rgba(67, 97, 238, 0.2);
-        }
-
-        .btn-primary:hover, .btn-primary:active {
-            background: var(--primary-dark);
-            transform: translateY(-1px);
-        }
-
-        .btn-danger {
-            background: var(--danger);
-            color: white;
-            padding: 8px 12px;
-        }
-
-        .btn-danger:hover, .btn-danger:active {
-            background: #e5177e;
-        }
-
-        .btn-success {
-            background: var(--success);
-            color: white;
-            padding: 8px 12px;
-        }
-
-        .btn-success:hover, .btn-success:active {
-            background: #3fb8e0;
-        }
-
-        .btn:disabled {
-            background: var(--gray);
-            cursor: not-allowed;
-            transform: none;
-            box-shadow: none;
-        }
-
-        .result-card {
-            background: white;
-            border-radius: var(--border-radius);
-            padding: 20px;
-            margin-top: 20px;
-            box-shadow: var(--box-shadow);
-            border-left: 3px solid var(--primary);
-            display: none;
-        }
-
-        .result-title {
-            font-size: clamp(1.1rem, 4vw, 1.2rem);
-            font-weight: 600;
-            margin-bottom: 15px;
-            color: var(--primary);
-            display: flex;
-            align-items: center;
-            gap: 8px;
-        }
-
-        .result-title svg {
-            width: 20px;
-            height: 20px;
-            fill: var(--primary);
-        }
-
-        .result-value {
-            font-size: clamp(1.3rem, 5vw, 1.4rem);
-            font-weight: 700;
-            margin: 12px 0;
-            color: var(--dark);
-        }
-
-        .result-detail {
-            margin: 10px 0;
-            font-size: clamp(0.9rem, 3.5vw, 1rem);
-            display: flex;
-            justify-content: space-between;
-            align-items: center;
-            flex-wrap: wrap;
-        }
-
-        .result-value-container {
-            display: flex;
-            align-items: center;
-            gap: 5px;
-        }
-
-        .result-value-number {
-            font-weight: 600;
-            min-width: 70px;
-            text-align: right;
-        }
-
-        .result-value-unit {
-            color: var(--gray);
-            font-size: clamp(0.8rem, 3vw, 0.85rem);
-            min-width: 35px;
-            text-align: left;
-        }
-
-        .safe {
-            color: #2ecc71;
-            font-weight: 600;
-        }
-
-        .unsafe {
-            color: var(--danger);
-            font-weight: 600;
-        }
-
-        .highlight {
-            background: rgba(67, 97, 238, 0.1);
-            padding: 12px;
-            border-radius: var(--border-radius);
-            margin-top: 12px;
-        }
-
-        .highlight-value {
-            font-size: clamp(1.5rem, 6vw, 1.7rem);
-            font-weight: 700;
-            color: var(--primary);
-            text-align: center;
-            margin: 8px 0;
-        }
-
-        .note {
-            font-size: clamp(0.75rem, 3vw, 0.8rem);
-            color: var(--gray);
-            margin-top: 20px;
-            padding-top: 12px;
-            border-top: 1px dashed #ddd;
-            line-height: 1.5;
-        }
-
-        .error-message {
-            color: var(--danger);
-            background: rgba(247, 37, 133, 0.1);
-            padding: 10px 12px;
-            border-radius: var(--border-radius);
-            margin-bottom: 15px;
-            display: none;
-            font-size: clamp(0.8rem, 3vw, 0.85rem);
-        }
-
-        .app-footer {
-            text-align: center;
-            margin-top: 25px;
-            font-size: clamp(0.7rem, 2.5vw, 0.75rem);
-            color: var(--gray);
-            padding-top: 12px;
-            border-top: 1px solid rgba(0, 0, 0, 0.05);
-        }
-
-        .hidden {
-            display: none;
-        }
-
-        @keyframes fadeIn {
-            from { opacity: 0; }
-            to { opacity: 1; }
-        }
-
-        .fade-in {
-            animation: fadeIn 0.3s ease-out forwards;
-        }
-
-        @media (max-width: 600px) {
-            body {
-                padding: 0;
-            }
-
-            .app-container {
-                margin: 0;
-                width: 100%;
-                border-radius: 0;
-            }
-
-            .app-body {
-                padding: 15px;
-            }
-
-            .app-header {
-                padding: 15px;
-            }
-
-            .app-header h1 {
-                font-size: clamp(1.2rem, 4.5vw, 1.4rem);
-            }
-
-            .input-row {
-                flex-direction: column;
-                gap: 0;
-            }
-
-            .column-shape-group {
-                flex: 1;
-                width: 100%;
-            }
-
-            .form-group {
-                width: 100%;
-            }
-
-            input, select, .btn {
-                width: 100%;
-                padding: 10px;
-                font-size: clamp(0.85rem, 3.5vw, 0.95rem);
-                box-sizing: border-box;
-            }
-
-            .rebar-set {
-                flex-direction: column;
-                align-items: stretch;
-            }
-
-            .rebar-set input {
-                width: 100%;
-            }
-
-            .rebar-set .btn-danger {
-                width: 100%;
-                padding: 10px;
-            }
-
-            .btn-success {
-                width: 100%;
-                padding: 10px;
-            }
-
-            .result-card {
-                padding: 15px;
-            }
-
-            .result-value {
-                font-size: clamp(1.2rem, 4.5vw, 1.3rem);
-            }
-
-            .highlight-value {
-                font-size: clamp(1.4rem, 5.5vw, 1.5rem);
-                text-align: left;
-            }
-
-            .result-detail {
-                flex-direction: column;
-                align-items: flex-start;
-                gap: 5px;
-                width: 100%;
-            }
-
-            .result-value-container {
-                width: 100%;
-                justify-content: flex-start;
-            }
-
-            .result-value-number {
-                text-align: left;
-                min-width: 0;
-            }
-
-            .result-value-unit {
-                text-align: left;
-                min-width: 0;
-            }
-
-            .highlight {
-                width: 100%;
-                text-align: left;
-            }
-        }
-
-        @media (max-width: 360px) {
-            .app-header h1 {
-                font-size: clamp(1.1rem, 4vw, 1.2rem);
-            }
-
-            .section-title {
-                font-size: clamp(0.9rem, 3.5vw, 1rem);
-            }
-
-            label {
-                font-size: clamp(0.8rem, 3vw, 0.85rem);
-            }
-
-            input, select, .btn {
-                font-size: clamp(0.8rem, 3vw, 0.9rem);
-            }
-        }
+       /* General Styles */
+body {
+    font-family: Arial, sans-serif;
+    text-align: center;
+    padding: 20px;
+    background-color: #f4f4f9;
+    margin: 0;
+}
+
+h2 {
+    color: #333;
+    margin-bottom: 20px;
+}
+
+.container {
+    max-width: 500px;
+    margin: 0 auto;
+    padding: 20px;
+    background: #fff;
+    border-radius: 10px;
+    box-shadow: 0 4px 8px rgba(0, 0, 0, 0.1);
+    width: 100%; /* Ensure container takes full width on mobile */
+    box-sizing: border-box; /* Include padding in width calculation */
+}
+
+.section {
+    margin: 20px 0;
+}
+
+input[type="text"], input[type="file"] {
+    width: 90%;
+    padding: 10px;
+    margin: 10px auto;
+    border: 1px solid #ddd;
+    border-radius: 5px;
+    font-size: 16px;
+    display: block;
+    box-sizing: border-box; /* Include padding in width calculation */
+}
+
+input[type="text"]:read-only {
+    background-color: #f0f0f0;
+}
+
+button {
+    padding: 10px 20px;
+    font-size: 16px;
+    border: none;
+    border-radius: 5px;
+    cursor: pointer;
+    transition: background-color 0.3s;
+    display: inline-block;
+    margin: 5px;
+    width: 90%; /* Make buttons full width on mobile */
+    box-sizing: border-box; /* Include padding in width calculation */
+}
+
+#connect-btn {
+    background-color: #28a745;
+    color: white;
+}
+
+#connect-btn:disabled {
+    background-color: #6c757d;
+    cursor: not-allowed;
+}
+
+#disconnect-btn {
+    background-color: #dc3545;
+    color: white;
+    display: none;
+}
+
+#disconnect-btn:hover {
+    background-color: #c82333;
+}
+
+#send-btn {
+    background-color: #007bff;
+    color: white;
+}
+
+#send-btn:disabled {
+    background-color: #6c757d;
+    cursor: not-allowed;
+}
+
+#send-btn.sent {
+    background-color: #dc3545;
+}
+
+#file-list {
+    text-align: left;
+    margin: 10px 0;
+    padding-left: 5%;
+}
+
+#download-link {
+    display: block;
+    padding: 10px;
+    background-color: #17a2b8;
+    color: white;
+    text-decoration: none;
+    border-radius: 5px;
+    margin: 5px auto;
+    width: 90%; /* Make download link full width on mobile */
+    box-sizing: border-box; /* Include padding in width calculation */
+}
+
+#download-link:hover {
+    background-color: #138496;
+}
+
+#received-files {
+    margin-top: 10px;
+}
+
+.center-text {
+    text-align: center;
+}
+
+.connected-peer-id {
+    display: none;
+    margin-top: 10px;
+    font-weight: bold;
+    color: #28a745;
+}
+
+/* Responsive Design for Mobile Devices */
+@media (max-width: 600px) {
+    .container {
+        padding: 15px; /* Reduce padding for smaller screens */
+    }
+
+    input[type="text"], input[type="file"] {
+        width: 100%; /* Full width for inputs on mobile */
+    }
+
+    button {
+        width: 100%; /* Full width for buttons on mobile */
+        margin: 5px 0; /* Adjust margin for better spacing */
+    }
+
+    #file-list {
+        padding-left: 0; /* Remove left padding for better alignment */
+    }
+
+    #download-link {
+        width: 100%; /* Full width for download link on mobile */
+    }
+}
+
+/* Responsive Design for Tablets */
+@media (min-width: 601px) and (max-width: 1024px) {
+    .container {
+        width: 70%; /* Slightly wider container for tablets */
+    }
+}
     </style>
 </head>
 <body>
-    <div class="app-container">
-        <div class="app-header">
-            <h1>Integrated Structural Calculator</h1>
-            <p>Structure Weight & Axial Capacity (ACI 318-19, ASCE 7-16, BNBC 2020)</p>
+    <div class="container">
+        <h2>P2P File Sharing</h2>
+
+        <div class="section center-text">
+            <h3>Your Peer ID</h3>
+            <input type="text" id="peer-id" readonly>
         </div>
 
-        <div class="app-body">
-            <div id="error" class="error-message"></div>
-
-            <!-- Structure Parameters -->
-            <div class="form-section" id="structure-form">
-                <div class="section-title">Structure Parameters</div>
-                <div class="input-row">
-                    <div class="form-group">
-                        <label for="numStories">Number of Stories</label>
-                        <input type="number" id="numStories" value="1" min="1" autocomplete="off">
-                    </div>
-                    <div class="form-group">
-                        <label for="colHeight">Column Height (ft)</label>
-                        <input type="number" id="colHeight" value="10" step="0.1" autocomplete="off">
-                    </div>
-                </div>
-                <div class="input-row">
-                    <div class="form-group column-shape-group">
-                        <label for="columnShape">Column Shape</label>
-                        <select id="columnShape">
-                            <option value="rectangular">Rectangular</option>
-                            <option value="circular">Circular</option>
-                        </select>
-                    </div>
-                    <div class="form-group rectangular-inputs">
-                        <label for="colWidth">Column Width (in)</label>
-                        <input type="number" id="colWidth" value="12" step="0.1" autocomplete="off">
-                    </div>
-                    <div class="form-group rectangular-inputs">
-                        <label for="colDepth">Column Depth (in)</label>
-                        <input type="number" id="colDepth" value="12" step="0.1" autocomplete="off">
-                    </div>
-                    <div class="form-group circular-inputs hidden">
-                        <label for="colDiameter">Column Diameter (in)</label>
-                        <input type="number" id="colDiameter" value="12" step="0.1" autocomplete="off">
-                    </div>
-                </div>
-                <div class="input-row">
-                    <div class="form-group">
-                        <label for="slabArea">Slab Area (sq.ft)</label>
-                        <input type="number" id="slabArea" value="150" step="0.1" autocomplete="off">
-                    </div>
-                    <div class="form-group">
-                        <label for="slabThickness">Slab Thickness (in)</label>
-                        <input type="number" id="slabThickness" value="5" step="0.1" autocomplete="off">
-                    </div>
-                </div>
-                <div class="input-row">
-                    <div class="form-group">
-                        <label for="beamWidth">Beam Width (in)</label>
-                        <input type="number" id="beamWidth" value="10" step="0.1" autocomplete="off">
-                    </div>
-                    <div class="form-group">
-                        <label for="beamDepth">Beam Depth (in)</label>
-                        <input type="number" id="beamDepth" value="10" step="0.1" autocomplete="off">
-                    </div>
-                </div>
-                <div class="input-row">
-                    <div class="form-group">
-                        <label for="floorFinish">Floor Finish (psf)</label>
-                        <input type="number" id="floorFinish" value="25" step="0.1" autocomplete="off">
-                    </div>
-                    <div class="form-group">
-                        <label for="liveLoad">Live Load (psf)</label>
-                        <input type="number" id="liveLoad" value="45" step="0.1" autocomplete="off">
-                    </div>
-                </div>
-                <div class="input-row">
-                    <div class="form-group">
-                        <label for="deadFactor">Dead Load Factor</label>
-                        <input type="number" id="deadFactor" value="1.2" step="0.1" autocomplete="off">
-                    </div>
-                    <div class="form-group">
-                        <label for="liveFactor">Live Load Factor</label>
-                        <input type="number" id="liveFactor" value="1.6" step="0.1" autocomplete="off">
-                    </div>
-                </div>
-                <div class="input-row">
-                    <div class="form-group">
-                        <label for="brickWeight">Weight per Brick (kg)</label>
-                        <input type="number" id="brickWeight" value="3.5" step="0.1" autocomplete="off">
-                    </div>
-                    <div class="form-group">
-                        <label for="numBricks">Number of Bricks</label>
-                        <input type="number" id="numBricks" value="1102" autocomplete="off">
-                    </div>
-                </div>
+        <div class="section">
+            <h3>Connect to Peer</h3>
+            <input type="text" id="connect-peer-id" placeholder="Enter 4-digit Peer ID">
+            <div class="connected-peer-id" id="connected-peer-id">Connected to Peer ID: <span id="connected-id"></span></div>
+            <div>
+                <button id="connect-btn" onclick="connectToPeer()" disabled>Connect</button>
+                <button id="disconnect-btn" onclick="disconnectFromPeer()">Disconnect</button>
             </div>
+        </div>
 
-            <!-- Environmental Load Parameters -->
-            <div class="form-section" id="environmental-form">
-                <div class="section-title">Environmental Load Parameters</div>
-                <div class="input-row">
-                    <div class="form-group">
-                        <label for="district">District (BNBC 2020)</label>
-                        <select id="district">
-                            <option value="">Select District</option>
-                        </select>
-                    </div>
-                    <div class="form-group">
-                        <label for="seismicZoneFactor">Seismic Zone Factor (Z)</label>
-                        <input type="number" id="seismicZoneFactor" value="0.2" step="0.01" autocomplete="off">
-                    </div>
-                </div>
-                <div class="input-row">
-                    <div class="form-group">
-                        <label for="windSpeed">Wind Speed (m/s)</label>
-                        <input type="number" id="windSpeed" value="65.7" step="0.1" autocomplete="off">
-                    </div>
-                    <div class="form-group">
-                        <label for="soilType">Soil Type</label>
-                        <select id="soilType">
-                            <option value="B">B (Rock)</option>
-                            <option value="C">C (Dense Soil)</option>
-                            <option value="D">D (Stiff Soil)</option>
-                            <option value="E">E (Soft Soil)</option>
-                        </select>
-                    </div>
-                </div>
-                <div class="input-row">
-                    <div class="form-group">
-                        <label for="importanceFactor">Seismic Importance Factor (I)</label>
-                        <input type="number" id="importanceFactor" value="1.0" step="0.1" autocomplete="off">
-                    </div>
-                    <div class="form-group">
-                        <label for="exposureCategory">Exposure Category</label>
-                        <select id="exposureCategory">
-                            <option value="B">B (Urban/Suburban)</option>
-                            <option value="C">C (Open Terrain)</option>
-                            <option value="D">D (Coastal)</option>
-                        </select>
-                    </div>
-                </div>
-                <div class="input-row">
-                    <div class="form-group">
-                        <label for="seismicFactor">Seismic Load Factor</label>
-                        <input type="number" id="seismicFactor" value="1.0" step="0.1" autocomplete="off">
-                    </div>
-                    <div class="form-group">
-                        <label for="windFactor">Wind Load Facto
+        <div class="section">
+            <h3>Send Files</h3>
+            <input type="file" id="file-input" multiple>
+            <div id="file-list"></div>
+            <button id="send-btn" onclick="sendFiles()" disabled>Send</button>
+        </div>
+
+        <div class="section">
+            <h3>Received Files</h3>
+            <div id="received-files"></div>
+        </div>
+    </div>
+
+    <script>
+        // Generate a 4-digit random numeric ID
+function generatePeerID() {
+    return Math.floor(1000 + Math.random() * 9000).toString();
+}
+
+const peer = new Peer(generatePeerID());
+let conn;
+
+// Display Peer ID when connected to PeerJS Server
+peer.on('open', id => {
+    document.getElementById('peer-id').value = id;
+});
+
+// Show selected files in the UI
+document.getElementById('file-input').addEventListener('change', function () {
+    const fileList = document.getElementById('file-list');
+    fileList.innerHTML = '';
+    const files = this.files;
+    for (let i = 0; i < files.length; i++) {
+        const fileItem = document.createElement('div');
+        fileItem.textContent = files[i].name;
+        fileList.appendChild(fileItem);
+    }
+    document.getElementById('send-btn').disabled = files.length === 0;
+});
+
+// Enable/Disable Connect button based on input
+document.getElementById('connect-peer-id').addEventListener('input', function () {
+    const connectBtn = document.getElementById('connect-btn');
+    connectBtn.disabled = this.value.length !== 4 || isNaN(this.value);
+});
+
+// Connect to a Peer
+function connectToPeer(peerId = null) {
+    const targetPeerId = peerId || document.getElementById("connect-peer-id").value;
+    if (targetPeerId.length !== 4 || isNaN(targetPeerId)) {
+        return;
+    }
+    conn = peer.connect(targetPeerId);
+    conn.on("open", () => {
+        document.getElementById("connect-btn").style.display = "none";
+        document.getElementById("disconnect-btn").style.display = "inline-block";
+        document.getElementById("connect-peer-id").style.display = "none";
+        document.getElementById("connected-peer-id").style.display = "block";
+        document.getElementById("connected-id").textContent = targetPeerId;
+    });
+    conn.on("close", () => {
+        document.getElementById("connect-btn").style.display = "inline-block";
+        document.getElementById("disconnect-btn").style.display = "none";
+        document.getElementById("connect-peer-id").style.display = "block";
+        document.getElementById("connected-peer-id").style.display = "none";
+        conn = null;
+    });
+    conn.on("error", (err) => {
+        document.getElementById("connect-btn").style.display = "inline-block";
+        document.getElementById("disconnect-btn").style.display = "none";
+        document.getElementById("connect-peer-id").style.display = "block";
+        document.getElementById("connected-peer-id").style.display = "none";
+        conn = null;
+    });
+    conn.on("data", data => {
+        if (data.fileName && data.fileData) {
+            const blob = new Blob([data.fileData]);
+            const link = document.createElement("a");
+            link.href = URL.createObjectURL(blob);
+            link.download = data.fileName;
+            link.id = "download-link";
+            link.innerText = `Download ${data.fileName}`;
+            document.getElementById("received-files").appendChild(link);
+        }
+    });
+}
+
+// Disconnect from Peer
+function disconnectFromPeer() {
+    if (conn) {
+        conn.close();
+        document.getElementById("connect-btn").style.display = "inline-block";
+        document.getElementById("disconnect-btn").style.display = "none";
+        document.getElementById("connect-peer-id").style.display = "block";
+        document.getElementById("connected-peer-id").style.display = "none";
+        conn = null;
+    }
+}
+
+// Send Multiple Files
+function sendFiles() {
+    const fileInput = document.getElementById("file-input");
+    const files = fileInput.files;
+    if (!files.length || !conn) {
+        return;
+    }
+
+    for (let i = 0; i < files.length; i++) {
+        const file = files[i];
+        const reader = new FileReader();
+        reader.readAsArrayBuffer(file);
+        reader.onload = function () {
+            conn.send({
+                fileName: file.name,
+                fileData: reader.result
+            });
+            if (i === files.length - 1) {
+                fileInput.value = '';
+                document.getElementById('file-list').innerHTML = '';
+                const sendBtn = document.getElementById('send-btn');
+                sendBtn.textContent = "Sent";
+                sendBtn.classList.add('sent');
+                sendBtn.disabled = true;
+                setTimeout(() => {
+                    sendBtn.textContent = "Send";
+                    sendBtn.classList.remove('sent');
+                    sendBtn.disabled = true;
+                }, 3000);
+            }
+        };
+    }
+}
+
+// Handle Incoming Connection
+peer.on('connection', connection => {
+    conn = connection;
+    conn.on("open", () => {
+        document.getElementById("connect-btn").style.display = "none";
+        document.getElementById("disconnect-btn").style.display = "inline-block";
+        document.getElementById("connect-peer-id").style.display = "none";
+        document.getElementById("connected-peer-id").style.display = "block";
+        document.getElementById("connected-id").textContent = conn.peer;
+    });
+    conn.on("close", () => {
+        document.getElementById("connect-btn").style.display = "inline-block";
+        document.getElementById("disconnect-btn").style.display = "none";
+        document.getElementById("connect-peer-id").style.display = "block";
+        document.getElementById("connected-peer-id").style.display = "none";
+        conn = null;
+    });
+    conn.on("error", (err) => {
+        document.getElementById("connect-btn").style.display = "inline-block";
+        document.getElementById("disconnect-btn").style.display = "none";
+        document.getElementById("connect-peer-id").style.display = "block";
+        document.getElementById("connected-peer-id").style.display = "none";
+        conn = null;
+    });
+    conn.on("data", data => {
+        if (data.fileName && data.fileData) {
+            const blob = new Blob([data.fileData]);
+            const link = document.createElement("a");
+            link.href = URL.createObjectURL(blob);
+            link.download = data.fileName;
+            link.id = "download-link";
+            link.innerText = `Download ${data.fileName}`;
+            document.getElementById("received-files").appendChild(link);
+        }
+    });
+});
+
+// Handle Peer disconnection
+peer.on('disconnected', () => {
+    document.getElementById("connect-btn").style.display = "inline-block";
+    document.getElementById("disconnect-btn").style.display = "none";
+    document.getElementById("connect-peer-id").style.display = "block";
+    document.getElementById("connected-peer-id").style.display = "none";
+    conn = null;
+});
+
+        // Prevent URL display on hover
+document.addEventListener('DOMContentLoaded', function() {
+    const links = document.querySelectorAll('a');
+    links.forEach(link => {
+        link.addEventListener('mouseover', function(e) {
+            // Clear any existing status text
+            window.status = '';
+            return true;
+        });
+        
+        // Alternative method to prevent status bar changes
+        link.onmouseover = link.onmouseout = function() {
+            return true;
+        };
+    });
+});
+
+// Disable right-click
+document.addEventListener('contextmenu', function(e) {
+    e.preventDefault();
+});
+
+// Optional: Disable keyboard shortcuts (F12, Ctrl+Shift+I, etc.)
+document.addEventListener('keydown', function(e) {
+    // Disable F12
+    if (e.key === 'F12') e.preventDefault();
+    
+    // Disable Ctrl+Shift+I (Chrome, Firefox)
+    if (e.ctrlKey && e.shiftKey && e.key === 'I') e.preventDefault();
+    
+    // Disable Ctrl+Shift+J (Chrome)
+    if (e.ctrlKey && e.shiftKey && e.key === 'J') e.preventDefault();
+    
+    // Disable Ctrl+U (View source)
+    if (e.ctrlKey && e.key === 'u') e.preventDefault();
+});
+    </script>
+</body>
+</html>
