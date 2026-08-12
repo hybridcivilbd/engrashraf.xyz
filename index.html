@@ -1,307 +1,1564 @@
 <!DOCTYPE html>
 <html lang="en">
 <head>
-  <meta charset="UTF-8">
-  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
 
-  <title>Hybrid Civil Engineering & Consultancy | Engr. Ashraful Islam</title>
+<title>Hybrid Civil Engineering & Consultancy | Engr. Ashraful Islam</title>
 
-  <!-- Bootstrap 5 -->
-  <link href="https://cdn.jsdelivr.net/npm/bootstrap@5.3.3/dist/css/bootstrap.min.css" rel="stylesheet">
+<!-- Bootstrap -->
+<link href="https://cdn.jsdelivr.net/npm/bootstrap@5.3.3/dist/css/bootstrap.min.css" rel="stylesheet">
 
-  <!-- Bootstrap Icons -->
-  <link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/bootstrap-icons@1.11.3/font/bootstrap-icons.min.css">
+<!-- Bootstrap Icons -->
+<link rel="stylesheet"
+href="https://cdn.jsdelivr.net/npm/bootstrap-icons@1.11.3/font/bootstrap-icons.min.css">
 
-  <style>
-    :root {
-      --primary: #0b5ed7;
-      --dark: #07182d;
-      --gold: #f5b400;
-      --light: #f5f8fc;
+<style>
+
+/* =====================================================
+   GLOBAL
+===================================================== */
+
+:root{
+    --navy:#06152d;
+    --blue:#0b5ed7;
+    --gold:#ffc107;
+    --cyan:#00e5ff;
+}
+
+html{
+    scroll-behavior:smooth;
+}
+
+body{
+    margin:0;
+    font-family:Arial,Helvetica,sans-serif;
+    color:#222;
+}
+
+
+/* =====================================================
+   NAVBAR
+===================================================== */
+
+.navbar{
+    background:rgba(4,18,43,.97);
+    z-index:1000;
+}
+
+.navbar-brand{
+    font-size:1.25rem;
+    font-weight:800;
+}
+
+.navbar-brand i{
+    color:var(--gold);
+}
+
+.nav-link{
+    color:white!important;
+    margin:0 8px;
+}
+
+.nav-link:hover{
+    color:var(--gold)!important;
+}
+
+
+/* =====================================================
+   HERO
+===================================================== */
+
+.hero{
+    position:relative;
+    min-height:92vh;
+    overflow:hidden;
+
+    background:
+    radial-gradient(
+        circle at 75% 45%,
+        rgba(0,180,255,.25),
+        transparent 35%
+    ),
+    linear-gradient(
+        110deg,
+        #041226 0%,
+        #082d5c 50%,
+        #0b5c91 100%
+    );
+
+    color:white;
+    display:flex;
+    align-items:center;
+}
+
+
+/* Hero glow */
+
+.hero:after{
+    content:"";
+    position:absolute;
+    width:700px;
+    height:700px;
+    right:-200px;
+    top:-100px;
+
+    background:
+    radial-gradient(
+        circle,
+        rgba(0,220,255,.20),
+        transparent 65%
+    );
+
+    pointer-events:none;
+}
+
+
+/* Hero content */
+
+.hero .container{
+    position:relative;
+    z-index:20;
+}
+
+.hero h1{
+    font-size:clamp(2.5rem,6vw,5.2rem);
+    line-height:1;
+    font-weight:900;
+    letter-spacing:-2px;
+}
+
+.hero h1 span{
+    color:var(--gold);
+}
+
+.hero-subtitle{
+    max-width:650px;
+    color:#dce9f8;
+    font-size:1.15rem;
+    line-height:1.7;
+}
+
+.btn-gold{
+    background:var(--gold);
+    color:#111;
+    border:none;
+    font-weight:700;
+}
+
+.btn-gold:hover{
+    background:#ffca2c;
+    color:#111;
+}
+
+
+/* =====================================================
+   BUILDING ANIMATION
+===================================================== */
+
+.building-scene{
+
+    position:absolute;
+
+    right:-20px;
+    bottom:0;
+
+    width:58%;
+    height:95%;
+
+    z-index:5;
+
+    pointer-events:none;
+
+    overflow:hidden;
+}
+
+
+/* Ground */
+
+.ground{
+
+    position:absolute;
+
+    bottom:0;
+    left:0;
+
+    width:100%;
+    height:30px;
+
+    background:
+    linear-gradient(
+        to bottom,
+        #26394c,
+        #071321
+    );
+
+    box-shadow:
+    0 -5px 20px rgba(0,0,0,.3);
+}
+
+
+/* =====================================================
+   BLUEPRINT
+===================================================== */
+
+.blueprint{
+
+    position:absolute;
+
+    right:25%;
+    bottom:35px;
+
+    width:310px;
+    height:490px;
+
+    border:2px solid var(--cyan);
+
+    opacity:0;
+
+    animation:
+    blueprint 2.5s ease-out forwards;
+
+}
+
+
+.blueprint:before,
+.blueprint:after{
+
+    content:"";
+
+    position:absolute;
+
+    background:var(--cyan);
+
+    box-shadow:
+    0 0 12px var(--cyan);
+
+}
+
+.blueprint:before{
+
+    width:100%;
+    height:2px;
+
+    top:50%;
+    left:0;
+
+}
+
+.blueprint:after{
+
+    width:2px;
+    height:100%;
+
+    top:0;
+    left:50%;
+
+}
+
+
+/* Blueprint floor lines */
+
+.blueprint-line{
+
+    position:absolute;
+
+    height:2px;
+
+    background:var(--cyan);
+
+    box-shadow:
+    0 0 10px var(--cyan);
+
+    width:80%;
+
+    left:10%;
+
+    opacity:0;
+
+}
+
+.bl1{
+    top:25%;
+    animation:lineAppear .7s 1s forwards;
+}
+
+.bl2{
+    top:45%;
+    animation:lineAppear .7s 1.3s forwards;
+}
+
+.bl3{
+    top:65%;
+    animation:lineAppear .7s 1.6s forwards;
+}
+
+.bl4{
+    top:85%;
+    animation:lineAppear .7s 1.9s forwards;
+}
+
+
+/* =====================================================
+   BUILDING
+===================================================== */
+
+.building{
+
+    position:absolute;
+
+    right:17%;
+    bottom:30px;
+
+    width:300px;
+    height:500px;
+
+    background:
+    linear-gradient(
+        90deg,
+        #536574,
+        #d9e4eb 48%,
+        #71808d
+    );
+
+    border:4px solid rgba(255,255,255,.6);
+
+    box-shadow:
+    -20px 0 50px rgba(0,0,0,.3),
+    10px 0 30px rgba(0,0,0,.15);
+
+    transform-origin:bottom;
+
+    transform:scaleY(0);
+
+    animation:
+    buildingRise 2s 2.3s ease-out forwards;
+
+}
+
+
+/* Building side */
+
+.building-side{
+
+    position:absolute;
+
+    top:0;
+    right:-55px;
+
+    width:55px;
+    height:100%;
+
+    background:
+    linear-gradient(
+        90deg,
+        #657786,
+        #334351
+    );
+
+    transform:
+    skewY(-25deg);
+
+    transform-origin:left top;
+
+}
+
+
+/* =====================================================
+   FLOOR SLABS
+===================================================== */
+
+.floor{
+
+    position:absolute;
+
+    left:-6px;
+
+    width:calc(100% + 12px);
+
+    height:9px;
+
+    background:#303e4b;
+
+    border-top:2px solid white;
+
+    opacity:0;
+
+    transform:scaleX(0);
+
+    transform-origin:left;
+
+    animation:
+    floorBuild .7s ease forwards;
+
+}
+
+.floor1{
+    bottom:70px;
+    animation-delay:2.9s;
+}
+
+.floor2{
+    bottom:145px;
+    animation-delay:3.35s;
+}
+
+.floor3{
+    bottom:220px;
+    animation-delay:3.8s;
+}
+
+.floor4{
+    bottom:295px;
+    animation-delay:4.25s;
+}
+
+.floor5{
+    bottom:370px;
+    animation-delay:4.7s;
+}
+
+.floor6{
+    bottom:445px;
+    animation-delay:5.15s;
+}
+
+
+/* =====================================================
+   WINDOWS
+===================================================== */
+
+.windows{
+
+    position:absolute;
+
+    top:20px;
+    left:20px;
+    right:20px;
+
+    display:grid;
+
+    grid-template-columns:
+    repeat(3,1fr);
+
+    grid-auto-rows:55px;
+
+    gap:20px 18px;
+
+}
+
+
+.window{
+
+    background:
+    linear-gradient(
+        135deg,
+        #dffaff,
+        #2a9bc8 45%,
+        #08466e
+    );
+
+    border:3px solid #263744;
+
+    box-shadow:
+    inset 0 0 12px rgba(255,255,255,.5),
+    0 0 10px rgba(0,210,255,.3);
+
+    opacity:0;
+
+    transform:
+    scaleY(0);
+
+    transform-origin:bottom;
+
+    animation:
+    windowAppear .45s ease forwards;
+
+}
+
+
+.window:nth-child(1){animation-delay:3s}
+.window:nth-child(2){animation-delay:3.2s}
+.window:nth-child(3){animation-delay:3.4s}
+
+.window:nth-child(4){animation-delay:3.55s}
+.window:nth-child(5){animation-delay:3.75s}
+.window:nth-child(6){animation-delay:3.95s}
+
+.window:nth-child(7){animation-delay:4.1s}
+.window:nth-child(8){animation-delay:4.3s}
+.window:nth-child(9){animation-delay:4.5s}
+
+.window:nth-child(10){animation-delay:4.65s}
+.window:nth-child(11){animation-delay:4.85s}
+.window:nth-child(12){animation-delay:5.05s}
+
+.window:nth-child(13){animation-delay:5.2s}
+.window:nth-child(14){animation-delay:5.4s}
+.window:nth-child(15){animation-delay:5.6s}
+
+.window:nth-child(16){animation-delay:5.75s}
+.window:nth-child(17){animation-delay:5.95s}
+.window:nth-child(18){animation-delay:6.15s}
+
+
+/* =====================================================
+   CRANE
+===================================================== */
+
+.crane{
+
+    position:absolute;
+
+    right:2%;
+    top:4%;
+
+    width:500px;
+    height:330px;
+
+}
+
+
+/* Crane tower */
+
+.crane-tower{
+
+    position:absolute;
+
+    right:70px;
+    bottom:0;
+
+    width:12px;
+    height:300px;
+
+    background:var(--gold);
+
+    box-shadow:
+    0 0 0 2px rgba(0,0,0,.15);
+
+}
+
+
+/* Crane diagonal supports */
+
+.crane-tower:before,
+.crane-tower:after{
+
+    content:"";
+
+    position:absolute;
+
+    width:3px;
+    height:300px;
+
+    background:#d99600;
+
+}
+
+.crane-tower:before{
+
+    left:-30px;
+
+    transform:
+    rotate(11deg);
+
+}
+
+.crane-tower:after{
+
+    right:-30px;
+
+    transform:
+    rotate(-11deg);
+
+}
+
+
+/* Crane arm */
+
+.crane-arm{
+
+    position:absolute;
+
+    right:65px;
+    top:10px;
+
+    width:440px;
+    height:10px;
+
+    background:var(--gold);
+
+}
+
+
+/* Cable */
+
+.crane-cable{
+
+    position:absolute;
+
+    right:320px;
+    top:20px;
+
+    width:2px;
+    height:130px;
+
+    background:white;
+
+    animation:
+    cableMove 4s ease-in-out infinite;
+
+}
+
+
+/* Hook */
+
+.crane-hook{
+
+    position:absolute;
+
+    right:310px;
+    top:145px;
+
+    width:25px;
+    height:25px;
+
+    border:
+    4px solid var(--gold);
+
+    border-top:0;
+
+    border-radius:
+    0 0 15px 15px;
+
+    animation:
+    hookMove 4s ease-in-out infinite;
+
+}
+
+
+/* Concrete */
+
+.concrete{
+
+    position:absolute;
+
+    right:282px;
+    top:158px;
+
+    width:85px;
+    height:18px;
+
+    background:#c4cdd3;
+
+    box-shadow:
+    0 5px 10px rgba(0,0,0,.4);
+
+    animation:
+    loadMove 4s ease-in-out infinite;
+
+}
+
+
+/* =====================================================
+   CONSTRUCTION PARTICLES
+===================================================== */
+
+.particle{
+
+    position:absolute;
+
+    width:5px;
+    height:5px;
+
+    background:var(--gold);
+
+    border-radius:50%;
+
+    opacity:0;
+
+    animation:
+    particleFloat 4s infinite;
+
+}
+
+.p1{
+    right:35%;
+    bottom:20%;
+    animation-delay:2s;
+}
+
+.p2{
+    right:42%;
+    bottom:30%;
+    animation-delay:2.7s;
+}
+
+.p3{
+    right:27%;
+    bottom:40%;
+    animation-delay:3.2s;
+}
+
+.p4{
+    right:50%;
+    bottom:25%;
+    animation-delay:4s;
+}
+
+.p5{
+    right:20%;
+    bottom:50%;
+    animation-delay:4.5s;
+}
+
+
+/* =====================================================
+   ANIMATIONS
+===================================================== */
+
+@keyframes blueprint{
+
+    0%{
+        opacity:1;
+        transform:scale(.6);
     }
 
-    html {
-      scroll-behavior: smooth;
+    70%{
+        opacity:.8;
     }
 
-    body {
-      font-family: Arial, Helvetica, sans-serif;
-      color: #222;
+    100%{
+        opacity:0;
+        transform:scale(1.1);
     }
 
-    /* NAVBAR */
-    .navbar {
-      background: rgba(7, 24, 45, 0.97);
+}
+
+
+@keyframes lineAppear{
+
+    from{
+        opacity:0;
+        transform:scaleX(0);
     }
 
-    .navbar-brand {
-      font-weight: 800;
-      letter-spacing: .5px;
+    to{
+        opacity:1;
+        transform:scaleX(1);
     }
 
-    .brand-icon {
-      color: var(--gold);
+}
+
+
+@keyframes buildingRise{
+
+    from{
+        transform:scaleY(0);
+        opacity:0;
     }
 
-    /* HERO */
-    .hero {
-      min-height: 92vh;
-      background:
-        linear-gradient(rgba(7,24,45,.86), rgba(7,24,45,.88)),
-        url("https://images.unsplash.com/photo-1503387762-592deb58ef4e?auto=format&fit=crop&w=1800&q=85")
-        center/cover;
-      display: flex;
-      align-items: center;
-      color: white;
+    to{
+        transform:scaleY(1);
+        opacity:1;
     }
 
-    .hero h1 {
-      font-size: clamp(2.4rem, 6vw, 5rem);
-      font-weight: 800;
-      line-height: 1.05;
+}
+
+
+@keyframes floorBuild{
+
+    from{
+        opacity:0;
+        transform:scaleX(0);
     }
 
-    .hero h1 span {
-      color: var(--gold);
+    to{
+        opacity:1;
+        transform:scaleX(1);
     }
 
-    .hero-subtitle {
-      font-size: 1.2rem;
-      max-width: 700px;
-      color: #dce6f4;
+}
+
+
+@keyframes windowAppear{
+
+    from{
+        opacity:0;
+        transform:scaleY(0);
     }
 
-    .btn-gold {
-      background: var(--gold);
-      color: #111;
-      font-weight: 700;
-      border: none;
+    to{
+        opacity:1;
+        transform:scaleY(1);
     }
 
-    .btn-gold:hover {
-      background: #ffca2c;
-      color: #111;
+}
+
+
+@keyframes cableMove{
+
+    0%,100%{
+        transform:translateX(0);
     }
 
-    /* SECTIONS */
-    section {
-      padding: 90px 0;
+    50%{
+        transform:translateX(-90px);
     }
 
-    .section-title {
-      font-weight: 800;
-      color: var(--dark);
+}
+
+
+@keyframes hookMove{
+
+    0%,100%{
+        transform:translateX(0);
     }
 
-    .section-title::after {
-      content: "";
-      display: block;
-      width: 55px;
-      height: 4px;
-      background: var(--gold);
-      margin-top: 12px;
+    50%{
+        transform:translateX(-90px);
     }
 
-    /* SERVICE CARDS */
-    .service-card {
-      border: none;
-      border-radius: 16px;
-      padding: 30px 20px;
-      height: 100%;
-      box-shadow: 0 8px 30px rgba(0,0,0,.08);
-      transition: .3s;
-      background: white;
+}
+
+
+@keyframes loadMove{
+
+    0%,100%{
+        transform:translateX(0);
     }
 
-    .service-card:hover {
-      transform: translateY(-8px);
-      box-shadow: 0 15px 40px rgba(0,0,0,.14);
+    50%{
+        transform:translateX(-90px);
     }
 
-    .service-icon {
-      width: 65px;
-      height: 65px;
-      display: flex;
-      align-items: center;
-      justify-content: center;
-      background: #eaf2ff;
-      color: var(--primary);
-      border-radius: 15px;
-      font-size: 30px;
-      margin-bottom: 20px;
+}
+
+
+@keyframes particleFloat{
+
+    0%{
+        opacity:0;
+        transform:translateY(20px);
     }
 
-    /* ABOUT */
-    .about-section {
-      background: var(--light);
+    30%{
+        opacity:1;
     }
 
-    .about-box {
-      background: white;
-      border-radius: 20px;
-      padding: 35px;
-      box-shadow: 0 10px 35px rgba(0,0,0,.07);
+    100%{
+        opacity:0;
+        transform:translateY(-100px);
     }
 
-    /* STATS */
-    .stats {
-      background: var(--dark);
-      color: white;
+}
+
+
+/* =====================================================
+   SERVICES
+===================================================== */
+
+section{
+    padding:90px 0;
+}
+
+.section-title{
+    font-weight:800;
+    color:var(--navy);
+}
+
+.section-title:after{
+    content:"";
+
+    display:block;
+
+    width:55px;
+    height:4px;
+
+    background:var(--gold);
+
+    margin-top:12px;
+}
+
+.service-card{
+
+    border:none;
+
+    border-radius:18px;
+
+    padding:30px 22px;
+
+    height:100%;
+
+    background:white;
+
+    box-shadow:
+    0 8px 30px rgba(0,0,0,.08);
+
+    transition:.3s;
+
+}
+
+.service-card:hover{
+
+    transform:translateY(-8px);
+
+    box-shadow:
+    0 15px 40px rgba(0,0,0,.15);
+
+}
+
+.service-icon{
+
+    width:65px;
+    height:65px;
+
+    display:flex;
+
+    align-items:center;
+    justify-content:center;
+
+    background:#eaf2ff;
+
+    color:var(--blue);
+
+    border-radius:15px;
+
+    font-size:30px;
+
+    margin-bottom:20px;
+
+}
+
+
+/* =====================================================
+   ABOUT
+===================================================== */
+
+.about-section{
+    background:#f5f8fc;
+}
+
+.about-box{
+
+    background:white;
+
+    border-radius:20px;
+
+    padding:35px;
+
+    box-shadow:
+    0 10px 35px rgba(0,0,0,.07);
+
+}
+
+
+/* =====================================================
+   STATS
+===================================================== */
+
+.stats{
+
+    background:var(--navy);
+
+    color:white;
+
+}
+
+.stat-number{
+
+    font-size:2.5rem;
+
+    font-weight:800;
+
+    color:var(--gold);
+
+}
+
+
+/* =====================================================
+   CONTACT
+===================================================== */
+
+.contact-section{
+    background:#f5f8fc;
+}
+
+.contact-card{
+
+    background:white;
+
+    border-radius:18px;
+
+    padding:30px;
+
+    height:100%;
+
+    box-shadow:
+    0 8px 30px rgba(0,0,0,.07);
+
+}
+
+.contact-icon{
+
+    font-size:30px;
+
+    color:var(--blue);
+
+}
+
+
+/* =====================================================
+   FOOTER
+===================================================== */
+
+footer{
+
+    background:#050f1e;
+
+    color:#b9c5d4;
+
+}
+
+footer strong{
+    color:white;
+}
+
+
+/* =====================================================
+   WHATSAPP
+===================================================== */
+
+.whatsapp{
+
+    position:fixed;
+
+    right:20px;
+    bottom:20px;
+
+    width:60px;
+    height:60px;
+
+    background:#25d366;
+
+    color:white;
+
+    border-radius:50%;
+
+    display:flex;
+
+    align-items:center;
+    justify-content:center;
+
+    font-size:31px;
+
+    z-index:999;
+
+    text-decoration:none;
+
+    box-shadow:
+    0 5px 20px rgba(0,0,0,.3);
+
+    transition:.2s;
+
+}
+
+.whatsapp:hover{
+
+    color:white;
+
+    transform:scale(1.1);
+
+}
+
+
+/* =====================================================
+   MOBILE
+===================================================== */
+
+@media(max-width:991px){
+
+    .building-scene{
+
+        width:100%;
+
+        right:-35%;
+
+        opacity:.35;
+
     }
 
-    .stat-number {
-      font-size: 2.5rem;
-      font-weight: 800;
-      color: var(--gold);
+    .building{
+
+        right:15%;
+
+        transform-origin:bottom;
+
     }
 
-    /* CONTACT */
-    .contact-section {
-      background: #f5f8fc;
+    .crane{
+
+        transform:
+        scale(.7);
+
+        transform-origin:
+        top right;
+
     }
 
-    .contact-card {
-      background: white;
-      border-radius: 18px;
-      padding: 30px;
-      height: 100%;
-      box-shadow: 0 8px 30px rgba(0,0,0,.07);
+}
+
+@media(max-width:576px){
+
+    .hero{
+
+        min-height:90vh;
+
     }
 
-    .contact-icon {
-      font-size: 30px;
-      color: var(--primary);
+    .building-scene{
+
+        width:130%;
+
+        right:-70%;
+
+        opacity:.25;
+
     }
 
-    /* FOOTER */
-    footer {
-      background: #050f1e;
-      color: #b9c5d4;
+    .hero h1{
+
+        font-size:2.8rem;
+
     }
 
-    footer strong {
-      color: white;
+    .hero-subtitle{
+
+        font-size:1rem;
+
     }
 
-    /* FLOATING WHATSAPP */
-    .whatsapp {
-      position: fixed;
-      right: 20px;
-      bottom: 20px;
-      width: 58px;
-      height: 58px;
-      background: #25D366;
-      color: white;
-      border-radius: 50%;
-      display: flex;
-      align-items: center;
-      justify-content: center;
-      font-size: 30px;
-      z-index: 999;
-      text-decoration: none;
-      box-shadow: 0 5px 20px rgba(0,0,0,.25);
-    }
+}
 
-    .whatsapp:hover {
-      color: white;
-      transform: scale(1.08);
-    }
-
-    @media(max-width: 768px) {
-      section {
-        padding: 65px 0;
-      }
-
-      .hero {
-        min-height: 85vh;
-      }
-    }
-  </style>
+</style>
 </head>
+
 
 <body>
 
-<!-- ================= NAVBAR ================= -->
+
+<!-- =====================================================
+     NAVBAR
+===================================================== -->
 
 <nav class="navbar navbar-expand-lg navbar-dark sticky-top">
-  <div class="container">
 
-    <a class="navbar-brand" href="#home">
-      <i class="bi bi-building brand-icon"></i>
-      HYBRID CIVIL
-    </a>
+<div class="container">
 
-    <button class="navbar-toggler"
-            type="button"
-            data-bs-toggle="collapse"
-            data-bs-target="#navbarNav">
-      <span class="navbar-toggler-icon"></span>
-    </button>
+<a class="navbar-brand" href="#home">
 
-    <div class="collapse navbar-collapse" id="navbarNav">
+<i class="bi bi-building"></i>
 
-      <ul class="navbar-nav ms-auto">
+HYBRID CIVIL
 
-        <li class="nav-item">
-          <a class="nav-link" href="#home">Home</a>
-        </li>
+</a>
 
-        <li class="nav-item">
-          <a class="nav-link" href="#about">About</a>
-        </li>
 
-        <li class="nav-item">
-          <a class="nav-link" href="#services">Services</a>
-        </li>
+<button
+class="navbar-toggler"
+type="button"
+data-bs-toggle="collapse"
+data-bs-target="#navbarNav">
 
-        <li class="nav-item">
-          <a class="nav-link" href="#contact">Contact</a>
-        </li>
+<span class="navbar-toggler-icon"></span>
 
-      </ul>
+</button>
 
-      <a href="tel:01717103243" class="btn btn-gold ms-lg-3">
-        <i class="bi bi-telephone"></i> Call Now
-      </a>
 
-    </div>
-  </div>
+<div
+class="collapse navbar-collapse"
+id="navbarNav">
+
+<ul class="navbar-nav ms-auto">
+
+<li class="nav-item">
+<a class="nav-link" href="#home">Home</a>
+</li>
+
+<li class="nav-item">
+<a class="nav-link" href="#about">About</a>
+</li>
+
+<li class="nav-item">
+<a class="nav-link" href="#services">Services</a>
+</li>
+
+<li class="nav-item">
+<a class="nav-link" href="#contact">Contact</a>
+</li>
+
+</ul>
+
+
+<a
+href="tel:01717103243"
+class="btn btn-gold ms-lg-3">
+
+<i class="bi bi-telephone"></i>
+
+Call Now
+
+</a>
+
+</div>
+
+</div>
+
 </nav>
 
 
-<!-- ================= HERO ================= -->
+
+<!-- =====================================================
+     HERO
+===================================================== -->
 
 <header class="hero" id="home">
 
-  <div class="container">
 
-    <div class="row">
+<!-- ================= BUILDING ANIMATION ================= -->
 
-      <div class="col-lg-9">
+<div class="building-scene">
 
-        <p class="text-uppercase fw-bold text-warning mb-3">
-          Civil Engineering • Design • Consultancy
-        </p>
 
-        <h1>
-          HYBRID CIVIL<br>
-          <span>Engineering & Consultancy</span>
-        </h1>
+<!-- Blueprint -->
 
-        <p class="hero-subtitle mt-4">
-          Professional structural, architectural and building design
-          solutions for residential, commercial and institutional projects.
-        </p>
+<div class="blueprint">
 
-        <div class="mt-4">
+<div class="blueprint-line bl1"></div>
+<div class="blueprint-line bl2"></div>
+<div class="blueprint-line bl3"></div>
+<div class="blueprint-line bl4"></div>
 
-          <a href="#contact" class="btn btn-gold btn-lg px-4 me-2">
-            Get a Consultation
-          </a>
+</div>
 
-          <a href="tel:01717103243"
-             class="btn btn-outline-light btn-lg px-4">
-            <i class="bi bi-telephone"></i> 01717103243
-          </a>
 
-        </
+<!-- Crane -->
+
+<div class="crane">
+
+<div class="crane-tower"></div>
+
+<div class="crane-arm"></div>
+
+<div class="crane-cable"></div>
+
+<div class="crane-hook"></div>
+
+<div class="concrete"></div>
+
+</div>
+
+
+<!-- Building -->
+
+<div class="building">
+
+
+<div class="building-side"></div>
+
+
+<!-- Floors -->
+
+<div class="floor floor1"></div>
+<div class="floor floor2"></div>
+<div class="floor floor3"></div>
+<div class="floor floor4"></div>
+<div class="floor floor5"></div>
+<div class="floor floor6"></div>
+
+
+<!-- Windows -->
+
+<div class="windows">
+
+<div class="window"></div>
+<div class="window"></div>
+<div class="window"></div>
+
+<div class="window"></div>
+<div class="window"></div>
+<div class="window"></div>
+
+<div class="window"></div>
+<div class="window"></div>
+<div class="window"></div>
+
+<div class="window"></div>
+<div class="window"></div>
+<div class="window"></div>
+
+<div class="window"></div>
+<div class="window"></div>
+<div class="window"></div>
+
+<div class="window"></div>
+<div class="window"></div>
+<div class="window"></div>
+
+</div>
+
+</div>
+
+
+<!-- Construction particles -->
+
+<div class="particle p1"></div>
+<div class="particle p2"></div>
+<div class="particle p3"></div>
+<div class="particle p4"></div>
+<div class="particle p5"></div>
+
+
+<!-- Ground -->
+
+<div class="ground"></div>
+
+</div>
+
+
+<!-- ================= HERO TEXT ================= -->
+
+<div class="container">
+
+<div class="row">
+
+<div class="col-lg-8">
+
+
+<p class="text-uppercase fw-bold text-warning mb-3">
+
+DREAM • DESIGN • BUILD
+
+</p>
+
+
+<h1>
+
+HYBRID CIVIL
+
+<br>
+
+<span>
+Engineering & Consultancy
+</span>
+
+</h1>
+
+
+<p class="hero-subtitle mt-4">
+
+Professional structural, architectural and building
+design solutions for residential, commercial and
+institutional projects.
+
+</p>
+
+
+<div class="mt-4">
+
+
+<a
+href="#contact"
+class="btn btn-gold btn-lg px-4 me-2">
+
+Get a Consultation
+
+</a>
+
+
+<a
+href="https://wa.me/8801717103243"
+target="_blank"
+class="btn btn-outline-light btn-lg px-4">
+
+<i class="bi bi-whatsapp"></i>
+
+WhatsApp
+
+</a>
+
+</div>
+
+
+<div class="mt-4">
+
+<strong>
+
+<i class="bi bi-person-badge"></i>
+
+Engr. Ashraful Islam
+
+</strong>
+
+<br>
+
+
+<span>
+
+<i class="bi bi-telephone-fill"></i>
+
+01717103243
+
+&nbsp; | &nbsp;
+
+01516120971
+
+</span>
+
+<br>
+
+
+<span>
+
+<i class="bi bi-geo-alt-fill"></i>
+
+Palong School Road,
+Sadar, Shariatpur - 8000
+
+</span>
+
+</div>
+
+
+</div>
+
+</div>
+
+</div>
+
+</header>
+
+
+
+<!-- =====================================================
+     ABOUT
+===================================================== -->
+
+<section id="about" class="about-section">
+
+<div class="container">
+
+<div class="row align-items-center g-5">
+
+
+<div class="col-lg-6">
+
+<h2 class="section-title mb-4">
+
+About Hybrid Civil
+
+</h2>
+
+
+<p class="lead">
+
+Your trusted partner for professional civil engineering,
+structural design and consultancy services.
+
+</p>
+
+
+<p>
+
+<strong>
+Hybrid Civil Engineering & Consultancy
+</strong>
+
+provides practical and professional engineering
+solutions for residential, commercial and
+institutional projects.
+
+</p>
+
+
+<p>
+
+Led by <strong>Engr. Ashraful Islam</strong>,
+we provide complete engineering design and
+consultancy support from concept to construction.
+
+</p>
+
+
+<a
+href="#contact"
+class="btn btn-primary">
+
+Contact Us
+
+</a>
+
+</div>
+
+
+<div class="col-lg-6">
+
+<div class="about-box">
+
+<h4 class="fw-bold mb-4">
+
+Why Choose Us?
+
+</h4>
+
+
+<div class="d-flex mb-3">
+
+<i class="bi bi-check-circle-fill text-primary fs-4 me-3"></i>
+
+<div>
+
+<strong>
+Professional Engineering
+</strong>
+
+<p class="mb-0 text-muted">
+Engineering-focused design and consultancy.
+</p>
+
+</div>
+
+</div>
+
+
+<div class="d-flex mb-3">
+
+<i class="bi bi-check-circle-fill text-primary fs-4 me-3"></i>
+
+<div>
+
+<strong>
+Safety First
+</strong>
+
+<p class="mb-0 text-muted">
+Structural safety and code-conscious design.
+</p>
+
+</div>
+
+</div>
+
+
+<div class="d-flex mb-3">
+
+<i class="bi bi-check-circle-fill text-primary fs-4 me-3"></i>
+
+<div>
+
+<strong>
+Cost Effective
+</strong>
+
+<p class="mb-0 text-muted">
+Practical eng
